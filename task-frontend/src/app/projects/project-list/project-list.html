@@ -1,0 +1,60 @@
+<!-- project-list.component.html -->
+<div class="max-w-6xl mx-auto px-4 py-8">
+
+  <div class="flex justify-between items-center mb-6">
+    <h2 class="text-2xl font-semibold">Mes Projets</h2>
+
+    <div class="flex gap-3">
+      <button
+        routerLink="/projects/new"
+        class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+      >
+        + Nouveau projet
+      </button>
+
+      <button
+        (click)="logout()"
+        class="px-4 py-2 border border-red-500 text-red-500 rounded-lg hover:bg-red-50"
+      >
+        Déconnexion
+      </button>
+    </div>
+  </div>
+
+ 
+
+
+  <p>Projects length: {{ projects.length }}</p>
+
+
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div
+      *ngFor="let project of projects"
+      class="bg-white rounded-xl shadow hover:shadow-lg transition"
+    >
+    
+
+      <div class="p-5">
+        <h3 class="font-semibold text-lg">{{ project.title }}</h3>
+        <p class="text-sm text-gray-500 mt-2">{{ project.description }}</p>
+      </div>
+
+      <div class="border-t p-4 flex justify-between">
+        <button
+          [routerLink]="['/projects', project.id]"
+          class="text-blue-600 hover:underline"
+        >
+          Détails
+        </button>
+
+        <button
+          (click)="deleteProject(project.id!)"
+          class="text-red-500 hover:underline"
+        >
+          Supprimer
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,125 @@
+<div class="max-w-5xl mx-auto px-4 py-8 space-y-6">
+
+  <button
+    (click)="goBack()"
+    class="flex items-center gap-2 text-sm text-gray-600 hover:text-blue-600"
+  >
+    ← Retour
+  </button>
+
+  <div class="bg-white rounded-xl shadow p-6">
+    <h3 class="text-lg font-semibold mb-4">Progression du projet</h3>
+
+    <div class="w-full bg-gray-200 rounded-full h-4 overflow-hidden">
+      <div
+        class="h-full bg-blue-600 transition-all"
+        [style.width.%]="progress"
+      ></div>
+    </div>
+
+    <p class="mt-2 text-sm text-gray-500">
+      {{ completedTasksCount }} / {{ totalTasksCount }} tâches complétées
+    </p>
+  </div>
+
+  <!-- Header -->
+  <div class="flex justify-between items-center">
+    <h4 class="text-xl font-semibold">Tâches</h4>
+    <button
+      (click)="toggleTaskForm()"
+      class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+    >
+      + Nouvelle tâche
+    </button>
+  </div>
+
+  <!-- Task Form -->
+  <div *ngIf="showTaskForm" class="bg-white rounded-xl shadow p-6 space-y-4">
+    <h5 class="font-semibold">Créer une tâche</h5>
+
+    <form (ngSubmit)="createTask()" class="space-y-4">
+      <input
+        type="text"
+        [(ngModel)]="newTask.title"
+        name="title"
+        placeholder="Titre de la tâche"
+        class="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500"
+        required
+      />
+
+      <textarea
+        [(ngModel)]="newTask.description"
+        name="description"
+        rows="2"
+        placeholder="Description"
+        class="w-full border rounded-lg px-4 py-2"
+      ></textarea>
+
+      <input
+        type="date"
+        [(ngModel)]="newTask.dueDate"
+        name="dueDate"
+        class="w-full border rounded-lg px-4 py-2"
+      />
+
+      <div class="flex justify-between">
+        <button
+          type="button"
+          (click)="toggleTaskForm()"
+          class="text-gray-500 hover:text-gray-700"
+        >
+          Annuler
+        </button>
+
+        <button
+          type="submit"
+          [disabled]="!newTask.title"
+          class="px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
+        >
+          Créer
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Tasks -->
+  <div *ngIf="tasks.length === 0" class="text-gray-500 text-center">
+    Aucune tâche pour ce projet.
+  </div>
+
+  <div class="space-y-3">
+    <div
+      *ngFor="let task of tasks"
+      class="bg-white rounded-lg shadow p-4 flex justify-between items-start"
+    >
+      <div>
+        <label class="flex items-center gap-2">
+          <input
+            type="checkbox"
+            [checked]="task.completed"
+            (change)="toggleComplete(task.id!)"
+            class="accent-blue-600"
+          />
+          <span
+            class="font-medium"
+            [class.line-through]="task.completed"
+          >
+            {{ task.title }}
+          </span>
+        </label>
+
+        <p class="text-sm text-gray-500">{{ task.description }}</p>
+        <small *ngIf="task.dueDate" class="text-xs text-gray-400">
+          📅 {{ task.dueDate }}
+        </small>
+      </div>
+
+      <button
+        (click)="deleteTask(task.id!)"
+        class="text-red-500 hover:text-red-700"
+      >
+        🗑
+      </button>
+    </div>
+  </div>
+</div>
